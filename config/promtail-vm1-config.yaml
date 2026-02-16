@@ -1,0 +1,66 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://192.168.1.38:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          host: client-vm-1
+          __path__: /var/log/*log
+
+  - job_name: application
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: application_logs
+          host: client-vm-1
+          __path__: /var/log/app/*.log
+
+  - job_name: custom
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: custom_logs
+          host: client-vm-1
+          __path__: /home/*/logs/*.log
+
+  - job_name: temperature
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: temperature_sensor
+          host: client-vm-1
+          sensor_type: temperature
+          __path__: /home/*/logs/temperature.log
+
+  - job_name: humidity
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: humidity_sensor
+          host: client-vm-1
+          sensor_type: humidity
+          __path__: /home/*/logs/humidity.log
+
+  - job_name: sensors
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: all_sensors
+          host: client-vm-1
+          __path__: /home/*/logs/sensors.log

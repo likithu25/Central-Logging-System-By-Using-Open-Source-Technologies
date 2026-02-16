@@ -1,0 +1,39 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://192.168.1.100:3100/loki/api/v1/push
+    # ⚠️ IMPORTANT: Replace 192.168.1.100 with your actual host machine IP
+    # Run 'ipconfig' on Windows host to find it
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          host: client-vm-1  # ⚠️ Change this for each VM (client-vm-1, client-vm-2, client-vm-3)
+          __path__: /var/log/*log
+
+  - job_name: application
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: application_logs
+          host: client-vm-1  # ⚠️ Change this for each VM
+          __path__: /var/log/app/*.log
+
+  - job_name: custom
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: custom_logs
+          host: client-vm-1  # ⚠️ Change this for each VM
+          __path__: /home/*/logs/*.log

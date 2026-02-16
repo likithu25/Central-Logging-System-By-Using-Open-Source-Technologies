@@ -1,0 +1,44 @@
+# ElastAlert Rule: High Temperature Alert
+
+name: High Temperature Alert
+type: any
+index: iot-logs*
+
+# Alert when temperature exceeds threshold
+filter:
+- query:
+    query_string:
+      query: "sensor_type:temperature AND value:>30"
+
+# Alert settings
+alert:
+  - email
+  - slack
+
+# Email configuration
+email:
+  - admin@example.com
+
+# Alert frequency
+realert:
+  minutes: 15
+
+# Alert content
+alert_subject: "⚠️ High Temperature Alert - {sensor_id}"
+alert_text: |
+  High temperature detected!
+  
+  Sensor ID: {sensor_id}
+  Location: {location}
+  Temperature: {value}°C
+  Status: {status}
+  Time: {timestamp}
+  
+  Threshold: 30°C
+  Current: {value}°C
+  
+  Please investigate immediately.
+
+# Query settings
+buffer_time:
+  minutes: 5

@@ -1,0 +1,33 @@
+# ElastAlert Rule: Critical System Health
+
+name: Critical System Health Alert
+type: any
+index: iot-logs*
+
+# Alert on critical system resources
+filter:
+- query:
+    query_string:
+      query: "sensor_type:system_health AND (cpu_percent:>90 OR memory_percent:>90 OR disk_percent:>95)"
+
+alert:
+  - email
+
+email:
+  - sysadmin@example.com
+
+realert:
+  minutes: 10
+
+alert_subject: "⚠️ Critical System Alert - High Resource Usage"
+alert_text: |
+  Critical system resource usage detected!
+  
+  CPU Usage: {cpu_percent}%
+  Memory Usage: {memory_percent}%
+  Disk Usage: {disk_percent}%
+  
+  Hostname: {sensor_id}
+  Time: {timestamp}
+  
+  Immediate action required!

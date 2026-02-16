@@ -1,0 +1,37 @@
+# ElastAlert Rule: Failed Login Attempts
+
+name: Failed Login Alert
+type: frequency
+index: iot-logs*
+
+# Alert when 3 failed logins in 5 minutes
+num_events: 3
+timeframe:
+  minutes: 5
+
+filter:
+- query:
+    query_string:
+      query: "log_type:security AND event_type:failed_login"
+
+# Alert settings
+alert:
+  - email
+
+email:
+  - security@example.com
+
+realert:
+  minutes: 30
+
+alert_subject: "🔒 Security Alert: Multiple Failed Login Attempts"
+alert_text: |
+  Multiple failed login attempts detected!
+  
+  Number of attempts: {num_hits}
+  Time window: 5 minutes
+  Source IP: {source_ip}
+  Username: {username}
+  
+  This may indicate a brute force attack.
+  Please review security logs.

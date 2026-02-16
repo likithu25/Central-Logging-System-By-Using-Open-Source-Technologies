@@ -1,0 +1,6 @@
+{
+    "elasticsearch_url": "https://my-elasticsearch-project-aa2ebe.es.us-central1.gcp.elastic.cloud:443",
+    "api_key": "MldsRXc1b0JJVmJIMk94SHJmT2Y6SHVaNDZPMEZYMXJiV09BaXRJcTNGZw==",
+  "index_name": "iot-logs",
+  "kibana_url": "https://new-fad608.kb.us-central1.gcp.elastic-cloud.com:443"
+}

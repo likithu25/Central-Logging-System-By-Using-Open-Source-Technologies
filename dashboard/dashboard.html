@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IoT Sensor Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .metrics {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .metric-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+        .metric-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        #status {
+            text-align: center;
+            padding: 10px;
+            background: #27ae60;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌡️ IoT Sensor Monitoring Dashboard (Local)</h1>
+    
+    <div id="status">Loading data from Elastic Cloud...</div>
+    
+    <div class="metrics">
+        <div class="metric-box">
+            <div>Total Records</div>
+            <div class="metric-value" id="totalCount">-</div>
+        </div>
+        <div class="metric-box" style="color: #e74c3c">
+            <div>Avg Temperature</div>
+            <div class="metric-value" id="avgTemp">-</div>
+        </div>
+        <div class="metric-box" style="color: #3498db">
+            <div>Avg Humidity</div>
+            <div class="metric-value" id="avgHumidity">-</div>
+        </div>
+        <div class="metric-box" style="color: #9b59b6">
+            <div>Motion Events</div>
+            <div class="metric-value" id="motionCount">-</div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <div id="temperatureChart"></div>
+    </div>
+    
+    <div class="chart-container">
+        <div id="humidityChart"></div>
+    </div>
+    
+    <div class="chart-container">
+        <div id="sensorDistribution"></div>
+    </div>
+    
+    <script>
+        // Note: This is a static HTML file
+        // To make it work with live data, you need to:
+        // 1. Run the Python backend server (local_dashboard.py)
+        // OR
+        // 2. Export data from Elasticsearch and load it here
+        
+        // Sample data for demonstration
+        function loadSampleData() {
+            document.getElementById('totalCount').textContent = '1,234';
+            document.getElementById('avgTemp').textContent = '25.5°C';
+            document.getElementById('avgHumidity').textContent = '62.3%';
+            document.getElementById('motionCount').textContent = '42';
+            document.getElementById('status').textContent = '✓ Dashboard Running (Sample Data)';
+            document.getElementById('status').style.background = '#27ae60';
+            
+            // Temperature chart
+            var tempTrace = {
+                x: generateTimeData(),
+                y: generateTempData(),
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Temperature',
+                line: {color: '#e74c3c', width: 2}
+            };
+            
+            var tempLayout = {
+                title: '🌡️ Temperature Over Time',
+                xaxis: {title: 'Time'},
+                yaxis: {title: 'Temperature (°C)'}
+            };
+            
+            Plotly.newPlot('temperatureChart', [tempTrace], tempLayout);
+            
+            // Humidity chart
+            var humidityTrace = {
+                x: generateTimeData(),
+                y: generateHumidityData(),
+                type: 'scatter',
+                mode: 'lines',
+                fill: 'tozeroy',
+                name: 'Humidity',
+                line: {color: '#3498db', width: 2}
+            };
+            
+            var humidityLayout = {
+                title: '💧 Humidity Levels Over Time',
+                xaxis: {title: 'Time'},
+                yaxis: {title: 'Humidity (%)'}
+            };
+            
+            Plotly.newPlot('humidityChart', [humidityTrace], humidityLayout);
+            
+            // Sensor distribution pie chart
+            var pieData = [{
+                values: [45, 30, 15, 10],
+                labels: ['Temperature', 'Humidity', 'Motion', 'System Health'],
+                type: 'pie',
+                marker: {
+                    colors: ['#e74c3c', '#3498db', '#9b59b6', '#27ae60']
+                }
+            }];
+            
+            var pieLayout = {
+                title: '📊 Data Distribution by Sensor Type'
+            };
+            
+            Plotly.newPlot('sensorDistribution', pieData, pieLayout);
+        }
+        
+        function generateTimeData() {
+            const now = new Date();
+            const times = [];
+            for (let i = 60; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60000);
+                times.push(time.toLocaleTimeString());
+            }
+            return times;
+        }
+        
+        function generateTempData() {
+            const data = [];
+            let temp = 25;
+            for (let i = 0; i < 61; i++) {
+                temp += (Math.random() - 0.5) * 2;
+                temp = Math.max(20, Math.min(30, temp));
+                data.push(temp);
+            }
+            return data;
+        }
+        
+        function generateHumidityData() {
+            const data = [];
+            let humidity = 60;
+            for (let i = 0; i < 61; i++) {
+                humidity += (Math.random() - 0.5) * 5;
+                humidity = Math.max(40, Math.min(80, humidity));
+                data.push(humidity);
+            }
+            return data;
+        }
+        
+        // Load data when page loads
+        loadSampleData();
+        
+        // Refresh every 5 seconds (when connected to real backend)
+        // setInterval(loadSampleData, 5000);
+    </script>
+</body>
+</html>

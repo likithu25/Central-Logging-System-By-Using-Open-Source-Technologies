@@ -1,0 +1,12 @@
+elasticsearch>=8.11.0
+psutil>=5.9.0
+paho-mqtt>=1.6.1
+pandas>=2.0.0
+dash>=2.14.0
+plotly>=5.17.0
+flask>=2.3.0
+flask-cors>=4.0.0
+pymongo>=4.5.0
+pyjwt>=2.8.0
+werkzeug>=2.3.0
+requests>=2.31.0

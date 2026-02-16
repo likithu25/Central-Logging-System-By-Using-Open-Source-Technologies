@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging out...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .message {
+            text-align: center;
+        }
+        .message h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .message p {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1>👋 Logging out...</h1>
+        <p>Redirecting to login page...</p>
+    </div>
+    
+    <script>
+        // Clear authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Redirect to login page
+        setTimeout(function() {
+            window.location.href = 'templates/login.html';
+        }, 1000);
+    </script>
+</body>
+</html>
