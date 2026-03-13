@@ -437,4 +437,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Backup and recovery system
 
 ---
-
+<p align="center">
+  Made with ❤️ for IoT enthusiasts
+</p>
